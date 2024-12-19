@@ -1,0 +1,105 @@
+\documentclass[a4paper, 12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[frenchb]{babel}
+\usepackage{libertine}
+\usepackage[pdftex]{graphicx}
+\usepackage{hyperref}
+
+
+
+
+\begin{document}
+
+\begin{titlepage}
+  \begin{sffamily}
+  \begin{center}
+  
+
+%ici on ajoute les images sur la même ligne (j'ai mis des images mais je pense que ça ne fonctionnera pas de votre côté pour l'instant)
+\begin{minipage}[c]{.46\linewidth}
+     \begin{center}
+             \includegraphics[width=4cm]{logo-fds.png}
+         \end{center}
+   \end{minipage} \hfill
+   \begin{minipage}[c]{.46\linewidth}
+    \begin{center}
+            \includegraphics[width=4cm]{logo-figure.png}
+        \end{center}
+ \end{minipage}
+    \newline \newline
+%ici il faudra voir pour séparer les images du titre (en l'état ils sont collés)
+%on passe ici au début du code de la page de garde
+
+    \textsc{\LARGE Faculté Des Sciences - Montpellier}\\[2cm]
+
+    \textsc{\Large Compte rendu de la séance 7}\\[1.5cm]
+
+    \HRule \\[0.4cm]
+    { \huge \bfseries Projet CMI\\[0.4cm] }
+
+    \HRule \\[2cm]
+    \\[2cm]
+
+    \begin{minipage}{0.4\textwidth}
+      \begin{flushleft} \large
+        Conrath Matthieu\\
+        Robert Wendy\\
+      \end{flushleft}
+    \end{minipage}
+    \begin{minipage}{0.4\textwidth}
+      \begin{flushright} \large
+       Pavie-Routaboul Clement\\
+        Rebagliato Lucas\\
+      \end{flushright}
+    \end{minipage}
+
+    \vfill
+    {\large 18 mars 2022}
+    \\
+    {\url{https://github.com/CPavieR/projet-jeux}}
+
+  \end{center}
+  \end{sffamily}
+\end{titlepage}
+
+\newpage
+
+%et à partir de là c'est le code pour le reste du doc
+
+
+\section*{Introduction}
+      Ce document est le compte rendu de notre avancé sur le projet du 11/03/2022 au 18/03/2022. Nous avons commencé l'aspect graphisme du jeu mais la gestion de la librairie CSFML est plus difficile que prévu (très peu d'explications et dysfonctionnements). L'adaptation de l'algorithme de Dijkstra à notre code est terminée. De plus nous avons adapté les revenus des contrats aux kilomètres parcourus pour un calcul plus réaliste des revenus de l'entreprise. Pour finir, nous avons réalisé la fusion de beaucoup de code.
+
+\section{Objectifs accomplis et problèmes rencontrés}
+     \begin{tabular}{|l|c|r|}
+  \hline
+  Objectif & Statut actuel & Problème(s) rencontré(s) \\
+  \hline
+   Intégration de l'algorithme de Dijkstra & Terminé & problèmes d'initialisation \\
+   & & dans l'algorithme\\
+   Ajustement des contrats & Terminé & Pas de soucis\\
+   Implémentation des graphismes & Commencé & peu d'explications sur le \\
+   & & fonctionnement de la librairie en C\\
+   Écriture d'un manuel d'utilisation & Terminé & pas de soucis\\
+   Ajout des salaires & Terminé & utilisation des pointeurs C\\
+   Correction de problèmes et bugs & En cours & Pas de soucis\\
+   
+  \hline
+\end{tabular}
+
+\HRule
+
+\section{Prochaines étapes}
+    Nous nous sommes rendus compte que le système d'expérience pour les conducteurs ne rajouterait pas grand chose au jeu et que ça ne serait pas si intéressant. En revanche, nous allons maintenant corriger les derniers légers bugs et faire quelques derniers ajustements. Nous allons également continuer notre avancée sur les graphismes, mais faute de documentation et d'explication sur la librairie que nous comptions utiliser, cette partie secondaire se retrouve ralentie et difficile à aborder. 
+    
+    
+
+\appendix  % On passe aux annexes
+\section{Bibliographie}
+\paragraph{1- }
+(Livre physique) : \url{https://www.editions-hatier.fr/livre/prepabac-nsi-tle-generale-specialite-bac-2022-9782401075221}
+\paragraph{2- }
+\url{https://zestedesavoir.com/tutoriels/755/le-langage-c-1/1043_aggregats-memoire-et-fichiers/4279_structures/}
+
+\end{document}
