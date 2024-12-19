@@ -1,0 +1,98 @@
+<!-- template.html -->
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>{{pageTitle}}</title>
+</head>
+
+<body>
+
+    <header>
+        <h2><a href="index.html"><img src="/images/img2.png" width="70" height="50"></a></h2>
+        <div class="header-content">
+            <div class="header-title-container">
+                <span class="header-title hidden">{{pageTitle}}</span>
+            </div>
+            <div class="header-pages">
+                <B><a href="energie.html">ENERGIE</a>
+                    <a href="alimentation.html">ALIMENTATION</a>
+                    <a href="transport.html">TRANSPORT</a>
+                    <a href="batiment.html">BATIMENT</a>
+                    <a href="industrie.html">INDUSTRIE</a></B>
+            </div>
+        </div>
+    </header>
+    <div class="bis_main-title">
+        <div class="bis_main-title-text">
+            <h1>{{pageTitle}}</h1>
+        </div>
+    </div>
+
+    <section class="bis-content">
+        {{pageContent}}
+    </section>
+
+    <footer>
+        <div class="footer-container">
+            <div class="footer-item">
+                <p>La Nuit de L'Info 2023: Les Pingouins de Madagascar</p>
+            </div>
+            <div class="footer-line"></div>
+            <div class="footer-item">
+                <p>
+                    <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</li>
+                    <li>Vestibulum vitae dui nec urna auctor laoreet.</li>
+                    <li>In placerat consequat erat, at laoreet magna varius eu.</li>
+                </p>
+            </div>
+            <div class="footer-item">
+                <div id="settings">
+                    <label for="darkModeToggle">Dark Mode:</label>
+                    <input type="checkbox" id="darkModeToggle">
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var header = document.querySelector("header");
+            var title = document.querySelector(".bis_main-title");
+            var headerTitle = document.querySelector(".header-title");
+
+            var darkModeToggle = document.getElementById("darkModeToggle");
+            var body = document.body;
+
+            if (localStorage.getItem("darkMode") === "enabled") {
+                body.classList.add("dark-mode");
+                darkModeToggle.checked = true;
+            }
+
+            darkModeToggle.addEventListener("change", function () {
+                if (darkModeToggle.checked) {
+                    body.classList.add("dark-mode");
+                    localStorage.setItem("darkMode", "enabled");
+                } else {
+                    body.classList.remove("dark-mode");
+                    localStorage.setItem("darkMode", null);
+                }
+            });
+
+            window.addEventListener("scroll", function () {
+                if (window.scrollY > 150) {
+                    title.classList.add("hidden");
+                    headerTitle.classList.remove("hidden");
+                } else {
+                    title.classList.remove("hidden");
+                    headerTitle.classList.add("hidden");
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

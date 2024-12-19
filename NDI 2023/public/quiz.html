@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quiz</title>
+  <style>
+    body {
+        font-family: 'Arial', sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        background-color: rgb(217, 241, 217);
+    }
+
+    header {
+        background-color: rgba(255, 255, 255, 0.99);
+        color: #333;
+        padding: 1px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: fixed;
+        width: 100%;
+        top: 0;
+        z-index: 1000;
+    }
+
+    header h2 {
+        margin-left: 15px;
+    }
+
+    header h2 a.hidden {
+        opacity: 0;
+        pointer-events: none;
+    }
+
+    header h2 a {
+        text-decoration: none;
+        color: #333;
+    }
+
+    header.scrolled h2 a {
+        opacity: 1;
+    }
+
+    .header-content {
+        display: flex;
+        align-items: center;
+        margin-right: 2%;
+    }
+
+    .header-pages a {
+        text-decoration: none;
+        color: #333;
+        padding: 0 12px;
+    }
+
+    body.dark-mode {
+        background-color: #333;
+        color: #ffffff;
+    }
+
+    #quiz-container{
+        background-color: #fff;
+        border-radius: 40px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        padding: 50px;
+        max-width: 700px;
+        width: 100%;
+        text-align: center;
+        font-size: 1.5em;
+        margin: 20px auto;
+        margin-right: 400px;
+    }
+
+    #quiz-container.dark-mode, #thermometerContainer.dark-mode {
+        background-color: #444;
+        color: #b1b1b1;
+    }
+
+    .btn-container {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .btn {
+        background-color: #7f7f7f;
+        color: #fff;
+        border: none;
+        padding: 10px;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        font-size: 1.0em;
+    }
+
+    .btn:hover {
+        background-color: #45a049;
+    }
+
+    #next-button {
+        display: none;
+        margin-left: 600px;
+    }
+
+    .correct {
+        background-color: #4caf50;
+    }
+
+    .incorrect {
+        background-color: #e53935;
+    }
+
+    #result-container {
+        font-weight: bold;
+        margin: 20px auto;
+        text-align: center;
+    }
+
+    .correct-text {
+        color: #4caf50;
+    }
+
+    .incorrect-text {
+        color: #e53935;
+    }
+
+    .thermometer-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: fixed;
+            top: 50%;
+            right: 2%; /* Adjusted for some space from the right */
+            transform: translateY(-50%);
+            margin-right: 150px;
+        }
+
+        .thermometer-img {
+            width: 16vw;
+            height: 32vw;
+            margin: 1vw;
+        }
+</style>
+</head>
+<body>
+    <header>
+        <h2><a href="index.html"><img src="/images/img2.png" width=70 height="50"></a></h2>
+        <div class="header-content">
+            <div class="header-pages">
+                <B><a href="energie.html">ENERGIE</a>
+                    <a href="alimentation.html">ALIMENTATION</a>
+                    <a href="transport.html">TRANSPORT</a>
+                    <a href="batiment.html">BATIMENT</a>
+                    <a href="industrie.html">INDUSTRIE</a></B>
+            </div>
+            <button id="toggle-dark-mode">Toggle Dark Mode</button>
+        </div>
+    </header>
+
+    <footer>
+        <div class="footer-container">
+            <div class="footer-item">
+                <div id="quiz-container">
+                    <h1>Quiz</h1>
+                    <div id="question-container"></div><br>
+                    <div id="answer-buttons" class="btn-container"></div><br>
+                    <button id="next-button" class="btn" onclick="nextQuestion()">Suivant</button>
+                    <div id="result-container"></div>
+                </div>
+            </div>
+            <div class="footer-line"></div>
+            <div class="footer-item">
+              <div id="thermometerContainer" class="thermometer-container">
+                <img id="thermometerImg" class="thermometer-img" src="/images/1.png" alt="Thermometer">
+              </div>
+            </div>
+        </div>
+    </footer>
+  
+    <script>
+        const quizContainer = document.getElementById('quiz-container');
+        const questionContainer = document.getElementById('question-container');
+        const answerButtons = document.getElementById('answer-buttons');
+        const nextButton = document.getElementById('next-button');
+        const resultContainer = document.getElementById('result-container');
+        const thermometerContainer = document.getElementById('thermometerContainer');
+
+        const questions = [
+    {
+      question: "Laquelle des options suivantes est une source d'énergie renouvelable?",
+      answers: [
+        { text: "Charbon", correct: false },
+        { text: "Gaz naturel", correct: false },
+        { text: "Énergie solaire", correct: true },
+        { text: " Pétrole brut", correct: false }
+      ]
+    },
+    {
+      question: "Quelle est la principale source d'énergie utilisée dans le monde aujourd'hui pour la production d'électricité ?",
+      answers: [
+        { text: "Charbon", correct: true },
+        { text: "Pétrole", correct: false },
+        { text: "Énergie solaire", correct: false },
+        { text: " Gaz naturel", correct: false }
+      ]
+    },
+    {
+      question: "Laquelle des sources d'énergies suivantes est une solution pour la diminution de gaz à effet de serre dans l’atmosphère ?",
+      answers: [
+        { text: "L'énergie  nucléaire", correct: false },
+        { text: "Les énergie renouvelables", correct: true },
+        { text: "Les énergies fossiles", correct: false },
+      ]
+    },
+    {
+      question: "Quel gaz à effet de serre est principalement émis par la combustion d'énergies fossiles ?",
+      answers: [
+        { text: "Dioxyde de soufre (SO2)", correct: false },
+        { text: "Méthane (CH4)", correct: false },
+        { text: "Dioxyde de carbone (CO2)", correct: true },
+        { text: "Ozone (O3)", correct: false }
+      ]
+    },
+    {
+      question: "Quel est le principal avantage de l'énergie nucléaire en termes d'émissions de gaz à effet de serre ?",
+      answers: [
+        { text: "Elle ne produit aucun déchet radioactif", correct: false },
+        { text: "Elle émet moins de CO2 par unité d'électricité produite", correct: true },
+        { text: "Elle est moins chère que les énergies renouvelables", correct: false },
+        { text: "Elle ne pose aucun risque de prolifération nucléaire", correct: false }
+      ]
+    },
+    {
+      question: "Quel est le concept de 'mobilité durable' dans le contexte des transports ?",
+      answers: [
+        { text: "Déplacement rapide", correct: false },
+        { text: "Déplacement électrique", correct: false },
+        { text: "Déplacement économe en énergie", correct: true },
+        { text: "Déplacement à longue distance", correct: false }
+      ]
+    },
+    {
+      question: "Les véhicules électriques sont-ils 'propres' ?",
+      answers: [
+        { text: "Vrai", correct: false },
+        { text: "Faux", correct: true }
+      ]
+    },
+    {
+      question: "Quel mode de transport est le plus polluant ?",
+      answers: [
+        { text: "Transport aérien", correct: false },
+        { text: "Transport routier", correct: true },
+        { text: "Transport ferroviaire", correct: false },
+        { text: "Transport fluvial", correct: false }
+      ]
+    },
+    {
+      question: "Quel véhicule émet le plus de gaz à effet de serre lors de sa fabrication ?",
+      answers: [
+        { text: "Véhicule thermique", correct: false },
+        { text: "Véhicule électrique", correct: true }
+      ]
+    },
+    {
+      question: "Parmi les options suivantes, quel type de transport est souvent cité comme ayant un potentiel de décarbonisation plus difficile à atteindre en raison de ses exigences énergétiques spécifiques ?",
+      answers: [
+        { text: "Transport maritime", correct: false },
+        { text: "Transport ferroviaire", correct: false },
+        { text: "Transport aérien", correct: true },
+        { text: "Transport routier", correct: false }
+      ]
+    },
+    {
+      question: "Comment les normes et réglementations peuvent-elles contribuer à la réduction des émissions industrielles de GES ?",
+      answers: [
+        { text: "En favorisant des pratiques non durables", correct: false },
+        { text: "En incitant à l'augmentation des émissions", correct: false },
+        { text: "En établissant des exigences contraignantes pour la réduction des émissions", correct: true },
+        { text: "En ignorant complètement le secteur industriel", correct: false }
+      ]
+    },
+    {
+      question: "Qu'est-ce que l'économie circulaire dans le contexte industriel ?",
+      answers: [
+        { text: "Un modèle économique basé sur la croissance infinie", correct: false },
+        { text: "Un modèle visant à maximiser la consommation de ressources", correct: false },
+        { text: "Un modèle favorisant la réutilisation, le recyclage et la récupération des matériaux", correct: true },
+        { text: "Un modèle excluant toute forme de recyclage", correct: false }
+      ]
+    },
+    {
+      question: "Pourquoi l'utilisation de carburants bas carbone est-elle considérée comme une solution pour réduire les émissions industrielles ?",
+      answers: [
+        { text: "Pour augmenter les émissions de gaz à effet de serre", correct: false },
+        { text: "Pour favoriser l'utilisation de carburants fossiles uniquement", correct: false },
+        { text: "Pour réduire les émissions liées à la combustion de combustibles fossiles", correct: true },
+        { text: "Pour ignorer complètement la question des émissions", correct: false }
+      ]
+    },
+    {
+      question: "Laquelle de ces affirmations est vraie ?",
+      answers: [
+        { text: "Le soja est une solution immédiate contre la production de CO2", correct: false },
+        { text: "La production agricole représente 40% des émissions territorials", correct: false },
+        { text: "Il est mieux de complètement supprimé la viande pour une alimentation équilibrée", correct: true },
+        { text: "Les végétariens produisent en générale 3 fois moins de viande", correct: false }
+      ]
+    },
+    {
+      question: "Le steak végétal serait l’alimentation du future",
+      answers: [
+        { text: "Vrai", correct: false },
+        { text: "Faux", correct: true },
+      ]
+    },
+    {
+      question: "Lequel est le plus polluant à long terme ?",
+      answers: [
+        { text: "Importer du soja", correct: true },
+        { text: "Cultiver des légumes", correct: false },
+        { text: "Produire de la viande", correct: false },
+      ]
+    },
+    {
+      question: "Il faut croire à 100% les écologistes végétariens",
+      answers: [
+        { text: "Vrai", correct: false },
+        { text: "Faux", correct: true },
+      ]
+    },
+    {
+      question: "Quel est le pourcentage de consommation d’énergie des bâtiments ?",
+      answers: [
+        { text: "Moins de 10%", correct: false },
+        { text: "Environ 25%", correct: false },
+        { text: "Presque 50%", correct: true },
+      ]
+    },
+    {
+      question: "La réduction de la consommations d’électricité n’aura aucun effet sur le réchauffement climatique",
+      answers: [
+        { text: "Vrai", correct: false },
+        { text: "Faux", correct: true },
+      ]
+    },
+    {
+      question: "Une aide financière à tous les foyer dans le but d’une rénovation énergétique pourrait changer la consommation d’énergie à vue d’oeil",
+      answers: [
+        { text: "Vrai", correct: true },
+        { text: "Faux", correct: false },
+      ]
+    },
+    {
+      question: "Trouvez la fausse information",
+      answers: [
+        { text: "La disponibilité des technologies n’est pas suffisante à la réduction de l’effet de serre", correct: false },
+        { text: "Parmi tous les secteurs économiques, les bâtiments sont à la deuxième place des plus gros consommateur d’énergie", correct: true },
+        { text: "Des bâtiments plus durable et économe sont la clé d’une population moins consommatrice d’énergie", correct: false },
+      ]
+    },
+  ];
+
+        let currentQuestionIndex = 0;
+        let incorrectAnswers = 0;
+        let correctAnswers = 0;
+        let firstIncorrectAnswer = true;
+
+        function startQuiz() {
+            currentQuestionIndex = 0;
+            incorrectAnswers = 0;
+            correctAnswers = 0;
+            firstIncorrectAnswer = true;
+            showQuestion(questions[currentQuestionIndex]);
+            nextButton.style.display = 'none';
+        }
+
+        function showQuestion(question) {
+            questionContainer.innerText = question.question;
+            answerButtons.innerHTML = '';
+            question.answers.forEach(answer => {
+                const button = document.createElement('button');
+                button.innerText = answer.text;
+                button.classList.add('btn');
+                button.addEventListener('click', () => selectAnswer(answer));
+                answerButtons.appendChild(button);
+            });
+        }
+
+        function selectAnswer(answer) {
+            const correct = answer.correct;
+            if (correct) {
+                quizContainer.classList.add('correct');
+                correctAnswers++;
+            } else {
+                quizContainer.classList.add('incorrect');
+                incorrectAnswers++;
+                updateThermometer();
+            }
+            nextButton.style.display = 'block';
+        }
+
+        function nextQuestion() {
+            quizContainer.classList.remove('correct');
+            quizContainer.classList.remove('incorrect');
+            currentQuestionIndex++;
+            if (currentQuestionIndex < questions.length) {
+                showQuestion(questions[currentQuestionIndex]);
+                nextButton.style.display = 'none';
+            } else {
+                finishQuiz();
+            }
+        }
+
+        function updateThermometer() {
+    const maxIncorrectAnswers = 5;
+    const fillPercentage = (incorrectAnswers / maxIncorrectAnswers) * 100;
+    const thermometerLevel = Math.min(5, Math.ceil(incorrectAnswers / (maxIncorrectAnswers / 5)));
+    const thermometerImg = document.getElementById('thermometerImg');
+
+    if (thermometerLevel === 0) {
+        thermometerImg.src = `/images/1.png`;
+    } else {
+        thermometerImg.src = `/images/${thermometerLevel}.png`;
+    }
+
+    if (firstIncorrectAnswer && incorrectAnswers > 0) {
+        thermometerImg.src = '/images/1.png';
+        firstIncorrectAnswer = false;
+    }
+}
+
+function finishQuiz() {
+    questionContainer.innerHTML = `Quiz terminé !<br><br>`;
+    if(incorrectAnswers > correctAnswers) {
+        questionContainer.innerText += 'Révise tes thèmes !!!';
+    } else {
+        questionContainer.innerText += 'Try again !!!';
+    }
+    answerButtons.innerHTML = '';
+    nextButton.disabled = true;
+    nextButton.setAttribute('disabled', 'true');
+    nextButton.style.visibility = 'hidden';
+    resultContainer.innerHTML = `<div class="correct-text">Réponses correctes : ${correctAnswers}</div>`;
+    resultContainer.innerHTML += `<div class="incorrect-text">Réponses incorrectes : ${incorrectAnswers}</div>`;
+}
+
+        const body = document.body;
+
+        function toggleDarkMode() {
+            body.classList.toggle('dark-mode');
+            quizContainer.classList.toggle('dark-mode');
+            thermometerContainer.classList.toggle('dark-mode');
+        }
+
+        document.getElementById('toggle-dark-mode').addEventListener('click', toggleDarkMode);
+
+        startQuiz();
+    </script>
+
+</body>
+</html>

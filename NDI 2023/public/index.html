@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>NDI: Pengouins de Madagascar</title>
+
+    <style>
+        #interactive-button {
+            display: flex;
+            position: relative;
+        }
+
+        #quiz-link {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #3e9029;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: transform 0.3s ease-out;
+        }
+
+        #interactive-button:hover #quiz-link {
+            transform: scale(1.09);
+        }
+
+        .floating-image {
+            display: flex;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            right: 10px;
+            height: 100vh;
+            z-index: -1;
+        }   
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h2><a href="index.html"><img src="/images/img2.png" width=70 height="50"></a></h2>
+        <div class="header-content">
+            <div class="header-pages">
+                <B><a href="energie.html">ENERGIE</a>
+                    <a href="alimentation.html">ALIMENTATION</a>
+                    <a href="transport.html">TRANSPORT</a>
+                    <a href="batiment.html">BATIMENT</a>
+                    <a href="industrie.html">INDUSTRIE</a></B>
+            </div>
+        </div>
+    </header>
+
+    <div class="main-title">
+        <div class="main-title-text">
+            <h1>Le Réchauffement Climatique</h1>
+            <h1>Notre Ennemi Commun</h1>
+            <img src="/images/fond.png" class="main-title-image">
+        </div>
+    </div>
+
+    <section class="intro-content">
+        <p>Face à l'urgence du changement climatique, l'adaptation durable de nos vies devient cruciale. Des domaines clés tels que l'alimentation, la mobilité et les infrastructures du bâtiment offrent des opportunités majeures pour un impact environnemental positif. Explorons le potentiel transformateur des énergies renouvelables dans ces domaines, façonnant ainsi un avenir durable. Cependant, l'ère numérique apporte son lot de défis, avec la prolifération des fausses informations en ligne, suscitant des inquiétudes quant à leur impact sur la société.
+        </p>
+    </section>
+
+    <div class="floating-image">
+        <img src="/images/feuille.png" alt="Floating Feuille Image" width="200px" height="200px">
+    </div>
+
+    <section class="main-content" id="interactive-button">
+        <p><B><FONT face="Times">Afin de lutter contre cette désinformation sur les solutions contre le réchauffement climatique, nous vous proposons un quiz:</FONT></B><p><a href="quiz.html" id="quiz-link">Prêt?</a></p></p>
+    </section>
+
+    <footer>
+        <div class="footer-container">
+            <div class="footer-item">
+                <p>La Nuit de L'Info 2023: Les Pingouins de Madagascar</p>
+            </div>
+            <div class="footer-line"></div>
+            <div class="footer-item">
+                <p>
+                    <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</li>
+                    <li>Vestibulum vitae dui nec urna auctor laoreet.</li>
+                    <li>In placerat consequat erat, at laoreet magna varius eu.</li>
+                </p>
+            </div>
+            <div class="footer-item">
+                <div id="settings">
+                    <label for="darkModeToggle">Dark Mode:</label>
+                    <input type="checkbox" id="darkModeToggle">
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var darkModeToggle = document.getElementById("darkModeToggle");
+            var body = document.body;
+
+            if (localStorage.getItem("darkMode") === "enabled") {
+                body.classList.add("dark-mode");
+                darkModeToggle.checked = true;
+            }
+    
+            darkModeToggle.addEventListener("change", function () {
+                if (darkModeToggle.checked) {
+                    body.classList.add("dark-mode");
+                    localStorage.setItem("darkMode", "enabled");
+                } else {
+                    body.classList.remove("dark-mode");
+                    localStorage.setItem("darkMode", null);
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

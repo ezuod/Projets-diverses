@@ -1,0 +1,353 @@
+body {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #ffffff;
+    color: #333;
+}
+
+header {
+    background-color: rgba(255, 255, 255, 0.94);
+    color: #333;
+    padding: 0;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+    height: 60px; 
+    transition: background-color 0.3s ease, box-shadow 0.3s ease, height 0.3s ease;
+}
+
+header h2 {
+    margin-left: 15px;
+}
+
+header h2 a {
+    text-decoration: none;
+    color: #333;
+}
+
+.header-content {
+    display: flex;
+    align-items: center;
+    margin-right: 2%;
+}
+
+.header-pages a {
+    text-decoration: none;
+    color: #333;
+    padding: 0 12px;
+}
+
+.header-title {
+    position: absolute;
+    left: 7%; 
+    bottom: 31%;
+    transition: opacity 0.3s ease, transform 0.3s ease; 
+    font-weight: bold;
+}
+
+.header-title.hidden {
+    opacity: 0;
+    transform: translateY(100%); 
+}
+
+.main-title {
+    position: relative;
+    background-color: rgb(227, 241, 227);
+    height: 400px;
+    padding: 50px;
+    display: flex;
+    justify-content: left;
+    align-items: flex-end;
+    transition: opacity 0.3s ease;
+}
+
+.main-title-text {
+    text-align: left;
+}
+
+h1 {
+    margin: 0;
+    font-size: 370%;
+}
+
+.main-title img {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    margin-bottom: 0px; 
+    max-width: auto;
+    height: 130%;
+}
+
+.intro-content {
+    max-width: 800px;
+    margin: 0 20px 25px 40px;
+    padding: 15px;
+    background-color: #fff;
+    position: sticky;
+    top: 0;
+    font-size: 120%;
+    transform: translateZ(0);
+    opacity: 0;
+    animation: fadeIn 1s ease-out forwards;
+}
+
+.bis-content {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 10px;
+    background-color: #fff;
+    top: 80px;
+    font-size: 110%;
+    transform: translateZ(0);
+    text-align: justify;
+}
+
+.bis-content ul {
+    opacity: 0;
+    font-size: 110%;
+    animation: fadeIn 1s ease-out forwards;
+}
+
+.bis-content p:first-of-type::first-letter {
+    font-size: 1.5em;
+    font-weight: bold;
+    font-size: 110%;
+    float: left;
+    margin-right: 4px;
+    line-height: 1;
+}
+
+.bis-content p {
+    opacity: 0;
+    font-size: 110%;
+    animation: fadeIn 1s ease-out forwards;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+header.scrolled {
+    position: fixed;
+    background-color: rgba(255, 255, 255, 0.99);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+}
+
+.bis_main-title {
+    background-color: rgb(227, 241, 227);
+    height: 200px;
+    padding: 50px;
+    display: flex;
+    justify-content: left;
+    align-items: flex-end;
+    transition: opacity 0.3s ease;
+}
+
+.bis_main-title.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+@keyframes fadeInY {
+    from {
+        opacity: 0;
+        transform: translateY(100%); 
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0); 
+    }
+}
+
+.main-content {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    font-style:  italic;
+}
+
+.footer-container {
+    display: flex;
+    align-items: center; 
+    justify-content: space-between; 
+    background-color: #5e5e5e; 
+    color: #ffffffbc; 
+    padding: 50px; 
+    text-align: left;
+}
+
+.footer-item {
+    flex: 1;
+}
+
+.footer-line {
+    width: 1px;
+    background-color: #ffffffbc; 
+    margin: 0 20px; 
+    height: 80px; 
+}
+
+#settings {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end; 
+}
+
+#darkModeToggle {
+    margin-left: 10px; 
+}
+
+body.dark-mode {
+    background-color: #333;
+    color: #fff;
+}
+
+header.dark-mode {
+    background-color: rgba(25, 25, 25, 0.94);
+    color: #c5c5c5;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+header.dark-mode h2 a {
+    color: #c5c5c5;
+}
+
+.main-title.dark-mode {
+    background-color: rgb(61, 71, 61);
+}
+
+.main-title.dark-mode h1 {
+    color: #fff;
+}
+
+.intro-content.dark-mode {
+    background-color: #444;
+    color: #fff;
+}
+
+.bis-content.dark-mode {
+    background-color: #444;
+    color: #fff;
+}
+
+.footer-container.dark-mode {
+    background-color: #333;
+    color: #c5c5c5;
+}
+
+.footer-line.dark-mode {
+    background-color: #c5c5c5;
+}
+
+#settings.dark-mode {
+    color: #c5c5c5;
+}
+
+#darkModeToggle.dark-mode {
+    color: #c5c5c5;
+}
+
+body.dark-mode .intro-content {
+    background-color: #333; 
+    color: #fff; 
+}
+
+body.dark-mode .intro-content p {
+    opacity: 1; 
+}
+
+body.dark-mode .main-title {
+    background-color: rgb(61, 71, 61); 
+    color: #fff; 
+}
+
+body.dark-mode .main-title h1 {
+    color: #fff; 
+}
+
+body.dark-mode #interactive-button {
+    background-color: #222;
+    position: relative;
+}
+
+body.dark-mode #quiz-link {
+    background-color: rgb(5, 91, 19); 
+    color: #fff; 
+}
+
+body.dark-mode #interactive-button:hover #quiz-link {
+    transform: scale(1.09);
+}
+
+body.dark-mode header {
+    background-color: rgba(25, 25, 25, 0.94); 
+}
+
+body.dark-mode header h2 a {
+    color: #c5c5c5; 
+}
+
+body.dark-mode .header-content a {
+    color: #c5c5c5; 
+}
+
+body.dark-mode .header-title {
+    color: #c5c5c5; 
+}
+
+body.dark-mode .footer-container {
+    background-color: #000000;
+    color: #c5c5c5;
+}
+
+body.dark-mode .footer-line {
+    background-color: #c5c5c5;
+}
+
+body.dark-mode .bis-content {
+    background-color: #333;
+    font-size: 110%;
+    color: #fff;
+}
+
+body.dark-mode .bis-content ul {
+    font-size: 110%;
+    opacity: 1;
+}
+
+body.dark-mode .bis-content p {
+    font-size: 110%;
+    opacity: 1;
+}
+
+body.dark-mode .bis-content p:first-of-type::first-letter {
+    color: #fff;
+}
+
+body.dark-mode header.scrolled {
+    background-color: rgba(0, 0, 0, 0.99);
+    color: #fff;
+    box-shadow: 0 4px 6px rgba(255, 255, 255, 0.1);
+}
+
+body.dark-mode .bis_main-title {
+    background-color: #444;
+    color: #fff;
+}
