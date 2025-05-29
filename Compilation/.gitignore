@@ -1,0 +1,15 @@
+mini_ml/parser_files/
+mini_ml/_build/
+mini_ml/doc.html
+mini_ml/interpreter.out
+mini_ml/mini_ml.opam
+mini_ml/visualiser.out
+.DS_Store
+rapport/rapport.bbl
+rapport/rapport.fdb_latexmk
+rapport/rapport.log
+rapport/rapport.synctex.gz
+rapport/rapport.pdf
+rapport/rapport.fls
+rapport/rapport.aux
+mini_ml/language/Parser_sandbox.mly

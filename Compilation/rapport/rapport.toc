@@ -1,0 +1,15 @@
+\babel@toc {french}{}\relax 
+\contentsline {section}{\numberline {1}Parsing}{2}{}%
+\contentsline {subsection}{\numberline {1.1}Questions de compréhension}{2}{}%
+\contentsline {subsection}{\numberline {1.2}Syntaxe étendue}{5}{}%
+\contentsline {subsubsection}{\numberline {1.2.1}Notation infixe des opérateurs binaire}{5}{}%
+\contentsline {paragraph}{Code modifié}{5}{}%
+\contentsline {subsubsection}{\numberline {1.2.2}Ajout de la syntaxe \texttt {let f x y = e}}{6}{}%
+\contentsline {subsubsection}{\numberline {1.2.3}Ajout du \texttt {-} unaire (moins)}{7}{}%
+\contentsline {paragraph}{Code modifié}{8}{}%
+\contentsline {subsubsection}{\numberline {1.2.4}Support des listes avec \texttt {[a; b; c]} et \texttt {[]}}{8}{}%
+\contentsline {subsubsection}{\numberline {1.2.5}Support de la notation \texttt {f x y}}{9}{}%
+\contentsline {section}{\numberline {2}Typage}{9}{}%
+\contentsline {subsection}{\numberline {2.1}Typage naïf et génération des contraintes}{9}{}%
+\contentsline {paragraph}{}{12}{}%
+\contentsline {subsection}{\numberline {2.2}Typage fortement polymorphe}{13}{}%

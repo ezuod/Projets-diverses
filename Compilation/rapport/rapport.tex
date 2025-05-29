@@ -1,0 +1,54 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage[margin=1in]{geometry}
+\usepackage{enumitem}
+\usepackage{listings}
+\lstdefinelanguage{OCaml}{
+  morekeywords={let, in, rec, match, with, type, module, struct, fun, function, val, open, and, if, then, else, begin, end},
+  sensitive=true,
+  morecomment=[s]{(*}{*)},
+  morestring=[b]",
+}
+\usepackage{xcolor}
+\usepackage{caption}
+
+\title{
+  Projet de compilation : Interpréteur Mini-ML
+}
+\author{
+  BARUT Ali Arda, ROBERT Wendy
+}
+\date{\today}
+\lstset{
+  basicstyle=\ttfamily\small,
+  keywordstyle=\color{blue},
+  commentstyle=\color{gray},
+  stringstyle=\color{orange},
+  breaklines=true,
+  frame=single,
+  captionpos=b,
+  showstringspaces=false,
+  language=OCaml
+}
+\begin{document}
+
+\maketitle
+\tableofcontents
+\newpage
+
+\section*{Introduction}
+Ce rapport de projet présente la logique du code que nous avons modifié dans le cadre du travail demandé.
+Il a pour objectif d'expliquer que nous avons adoptés, en lien direct avec les questions posées dans le sujet du projet.
+Afin de rendre nos explications plus claires, nous avons intégré des images ainsi que des extraits de code représentatifs (et pas de code complet).
+
+% --- Parser ---
+\input{chapters/parser}
+
+% --- Typage ---
+\input{chapters/typage}
+
+\end{document}
