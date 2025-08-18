@@ -52,9 +52,7 @@ print("\nDimensions Data_1 :", data1.shape)
 print("\nDimensions Data_2 :", data2.shape)
 print("\nDimensions après fusion :", merged.shape) 
 
-# -----------------------------
 # Préparation des données
-# -----------------------------
 
 # Dictionnaire pour renommer les colonnes
 rename_map = {
@@ -97,8 +95,10 @@ for col in ["age", "epargne_financiere", "epargne_total"]:
 merged = merged.dropna(subset=["age", "epargne_total", "epargne_financiere"])
 
 # -----------------------------
-# 1) Histogramme par tranche d’âge (Épargne totale)
+# GRAPHIQUES
 # -----------------------------
+
+# 1) Histogramme par tranche d’âge (Épargne totale)
 bins = [18, 30, 40, 50, 60, 70, 80, 100]
 labels = ["18-29", "30-39", "40-49", "50-59", "60-69", "70-79", "80+"]
 merged["tranche_age"] = pd.cut(merged["age"], bins=bins, labels=labels, right=False)
@@ -115,9 +115,9 @@ plt.title("Épargne totale moyenne par tranche d’âge")
 plt.grid(axis="y", alpha=0.3)
 plt.show()
 
-# -----------------------------
+
 # 2) Camembert CSP (Épargne totale)
-# -----------------------------
+
 # Somme de l'épargne totale par CSP
 epargne_par_csp_total = merged.groupby("csp")["epargne_total"].sum().sort_values(ascending=False)
 
@@ -142,9 +142,9 @@ plt.legend(epargne_csp_total_final.index, loc="center left", bbox_to_anchor=(1, 
 plt.tight_layout()
 plt.show()
 
-# -----------------------------
+
 # 3) Histogramme par tranche d’âge (Épargne financière)
-# -----------------------------
+
 # Calcul de l'épargne financière moyenne par tranche d’âge
 epargne_par_tranche_fin = merged.groupby("tranche_age")["epargne_financiere"].mean()
 
@@ -157,9 +157,9 @@ plt.title("Épargne financière moyenne par tranche d’âge")
 plt.grid(axis="y", alpha=0.3)
 plt.show()
 
-# -----------------------------
+
 # 4) Camembert CSP (Épargne financière)
-# -----------------------------
+
 # Somme de l'épargne financière par CSP
 epargne_par_csp_fin = merged.groupby("csp")["epargne_financiere"].sum().sort_values(ascending=False)
 
@@ -183,9 +183,9 @@ plt.legend(epargne_csp_fin_final.index, loc="center left", bbox_to_anchor=(1, 0.
 plt.tight_layout()
 plt.show()
 
-# -----------------------------
+
 # 5) Histogrammes des tranches d'épargne par catégorie
-# -----------------------------
+
 # Définir les tranches d'épargne selon les quartiles
 merged["tranche_epargne_total"] = pd.qcut(merged["epargne_total"], q=4, labels=["Faible", "Moyenne", "Haute", "Très haute"])
 
