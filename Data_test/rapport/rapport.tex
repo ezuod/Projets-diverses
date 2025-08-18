@@ -1,0 +1,55 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage[margin=1in]{geometry}
+\usepackage{enumitem}
+\usepackage{listings}
+\usepackage{xcolor}
+\lstdefinelanguage{OCaml}{
+  morekeywords={let, in, rec, match, with, type, module, struct, fun, function, val, open, and, if, then, else, begin, end},
+  sensitive=true,
+  morecomment=[s]{(*}{*)},
+  morestring=[b]",
+}
+\usepackage{xcolor}
+\usepackage{caption}
+
+\title{
+  Data Test : BIFORA
+}
+\author{
+  ROBERT Wendy
+}
+\date{\today}
+\lstset{
+  basicstyle=\ttfamily\small,
+  keywordstyle=\color{blue},
+  commentstyle=\color{gray},
+  stringstyle=\color{orange},
+  breaklines=true,
+  frame=single,
+  captionpos=b,
+  showstringspaces=false,
+  language=OCaml
+}
+\begin{document}
+
+\maketitle
+\tableofcontents
+\newpage
+
+\section*{Introduction}
+L'objectif de ce travail est d'analyser et de préparer un jeu de données issu d'un fichier Excel fourni. 
+Ce fichier comporte deux feuilles principales (\texttt{Data\_1} et \texttt{Data\_2}) décrivant des informations 
+sur une base de clients, ainsi qu'une troisième feuille (\texttt{TYPES VARIABLES}) servant de dictionnaire de données. 
+
+% --- import ---
+\input{chapters/import}
+
+% --- analyse ---
+\input{chapters/analyse}
+
+\end{document}

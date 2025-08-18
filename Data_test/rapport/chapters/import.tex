@@ -1,0 +1,154 @@
+\section{Importation des données}
+
+\subsection{Python}
+
+L’analyse débute par l’importation du fichier Excel \texttt{data\_test\_BIFORA.xlsx} contenant trois feuilles de données : 
+\texttt{Data\_1}, \texttt{Data\_2} et \texttt{TYPES VARIABLES}. 
+Cette opération est réalisée en Python grâce à la bibliothèque \texttt{pandas}, qui permet de lire directement des fichiers Excel.
+
+\subsubsection{Chargement des bibliothèques}
+Nous commençons par importer la bibliothèque \texttt{pandas} :
+
+\begin{lstlisting}[caption=Importation bibliothèque Pandas]
+import pandas as pd
+\end{lstlisting}
+
+
+\subsubsection{Lecture du fichier Excel}
+Ensuite, nous spécifions le chemin du fichier et chargeons les trois feuilles de données :
+
+\begin{lstlisting}[caption=Importation du fichier Excel]
+    # Importation des 3 feuilles
+    path = r"/Users/wendyr/Downloads/data_test_BIFORA (2) (1).xlsx"
+    data1 = pd.read_excel(path, sheet_name="Data_1")
+    data2 = pd.read_excel(path, sheet_name="Data_2")
+    dict_vars = pd.read_excel(path, sheet_name="TYPES VARIABLES ")
+    \end{lstlisting}
+
+Une fois les données importées, nous pouvons examiner leurs dimensions, leurs colonnes et les premières lignes afin de comprendre leur structure :
+
+
+Cette étape constitue la base de toute l'analyse, car elle permet de vérifier que les données sont bien accessibles et lisibles par Python avant de passer au diagnostic et au nettoyage.
+\subsubsection{Préparation et nettoyage des données}
+
+Une fois les données importées, il est nécessaire d'effectuer plusieurs opérations de nettoyage afin d'obtenir un jeu de données cohérent et exploitable.
+
+\subsubsection{Renommage et nettoyage des colonnes}
+Certaines variables contiennent des erreurs de frappe ou des espaces parasites dans leur nom. Nous commençons donc par corriger ces problèmes.
+
+\begin{lstlisting}[language=Python, caption=Correction des noms de variables]
+# Renommer correctement la variable identifiant
+data1 = data1.rename(columns={"identiffiant ": "identifiant"})
+
+# Nettoyer les noms des variables (suppression des espaces)
+data1.columns = data1.columns.str.strip()
+data2.columns = data2.columns.str.strip()
+dict_vars["VARIABLES"] = dict_vars["VARIABLES"].str.strip()
+\end{lstlisting}
+
+\subsubsection{Conversion automatique des variables}
+À l’aide du dictionnaire de données (\texttt{TYPES VARIABLES}), nous convertissons les variables quantitatives en numérique.  
+Lorsque la conversion échoue (exemple : valeur texte dans une colonne numérique), la valeur est transformée en \texttt{NaN} (valeur manquante).
+
+\begin{lstlisting}[language=Python, caption=Conversion des variables selon le dictionnaire]
+for _, row in dict_vars.iterrows():
+    var = row["VARIABLES"]
+    if var in data1.columns:
+        if row["Quali / Quanti "] == "Quanti":
+            data1[var] = pd.to_numeric(data1[var], errors="coerce")
+    if var in data2.columns:
+        if row["Quali / Quanti "] == "Quanti":
+            data2[var] = pd.to_numeric(data2[var], errors="coerce")
+\end{lstlisting}
+
+\subsubsection{Diagnostic des données}
+Nous définissons une fonction \texttt{diagnostic} qui permet d'afficher rapidement des informations essentielles :  
+types des variables, valeurs manquantes et doublons.
+
+\begin{lstlisting}[language=Python, caption=Diagnostic des bases]
+def diagnostic(df, name):
+    print("\n--- Diagnostic "+name+" ---")
+    print("Types de variables :\n", df.dtypes)
+    print("\nValeurs manquantes :\n", df.isna().sum())
+    print("\nDoublons :", df.duplicated().sum())
+
+diagnostic(data1, "Data_1")
+diagnostic(data2, "Data_2")
+\end{lstlisting}
+
+\subsubsection{Suppression des doublons et fusion des bases}
+Enfin, nous supprimons les doublons éventuels puis fusionnons les deux jeux de données sur la variable \texttt{identifiant}, 
+qui n'aurait pas été possible sans la correction du nom de la variable dans \texttt{Data\_1}.
+
+\begin{lstlisting}[language=Python, caption=Nettoyage et fusion des données]
+# Suppression des lignes identiques
+data1 = data1.drop_duplicates() 
+data2 = data2.drop_duplicates()
+
+# Fusion des deux jeux de données
+merged = data1.merge(data2, on="identifiant", how="inner")
+
+print("\nDimensions Data_1 :", data1.shape)
+print("\nDimensions Data_2 :", data2.shape)
+print("\nDimensions après fusion :", merged.shape)
+\end{lstlisting}
+
+\subsection{SAS}
+
+En parallèle de Python, les données ont également été importées dans SAS afin de permettre une exploration complémentaire et des traitements statistiques. 
+
+\subsubsection{Définition de la librairie et importation}
+Tout d'abord, une librairie pointant vers le fichier Excel a été définie. L'instruction \texttt{proc import} a ensuite été utilisée pour lire directement les feuilles \texttt{Data\_1} et \texttt{Data\_2} :
+
+\begin{lstlisting}[caption=Importation des données dans SAS]
+libname x xlsx '/home/u64300920/data_test_BIFORA (2) (1).xlsx';
+
+/* Import feuille Data_1 */
+proc import datafile='/home/u64300920/data_test_BIFORA (2) (1).xlsx'
+    out=x.data1
+    dbms=xlsx
+    replace;
+    sheet="Data_1";
+    getnames=yes;
+run;
+
+/* Import feuille Data_2 */
+proc import datafile='/home/u64300920/data_test_BIFORA (2) (1).xlsx'
+    out=x.data2
+    dbms=xlsx
+    replace;
+    sheet="Data_2";
+    getnames=yes;
+run;
+\end{lstlisting}
+
+\subsubsection{Conversion des variables mal typées}
+Lors de l'importation, certaines variables continues (par exemple \texttt{Epargne\_financiere}) ont été interprétées comme du texte.  
+Afin de pouvoir effectuer des analyses statistiques correctes, elles ont été converties en variables numériques à l'aide de la fonction \texttt{input()} :
+
+\begin{lstlisting}[caption=Conversion de variables texte en numérique]
+/* Création d'une nouvelle version de Data_1 avec conversion */
+data x.data1_num;
+    set x.data1;
+    Epargne_financiere_num = input(Epargne_financiere, best32.);
+    drop Epargne_financiere;
+    rename Epargne_financiere_num = Epargne_financiere;
+run;
+\end{lstlisting}
+
+Cette étape garantit que les montants financiers pourront être utilisés dans des calculs (sommes, moyennes, médianes, etc.).
+
+\subsubsection{Contrôle de l'importation}
+Enfin, une inspection des structures des tables a été réalisée avec la procédure \texttt{proc contents}, afin de vérifier la nature des variables importées (caractère ou numérique) :
+
+\begin{lstlisting}[caption=Inspection des tables SAS]
+proc contents data=x.data1;
+    title "Structure du dataset DATA_1";
+run;
+
+proc contents data=x.data2;
+    title "Structure du dataset DATA_2";
+run;
+\end{lstlisting}
+
+Cette première phase dans SAS permet donc d'assurer la bonne lecture des données et la cohérence des formats avant de passer à l'analyse descriptive et au rapprochement des deux jeux de données.
