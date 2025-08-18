@@ -317,12 +317,51 @@ LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 4
 6.
  (t1lmtt.fd
 File: t1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
-) (chapters/import
-Missing character: There is no ’ ("2019) in font ec-lmr10!
-Missing character: There is no ’ ("2019) in font ec-lmr10!
-(lstlang1.sty
+) (chapters/import (lstlang1.sty
 File: lstlang1.sty 2020/03/24 1.8d listings language file
-) [2]
+)
+Overfull \hbox (11.60406pt too wide) in paragraph at lines 45--46
+[]\T1/lmr/m/n/10.95 Pour mieux com-prendre la struc-ture des jeux de don-nées, 
+nous dé-fi-nis-sons une fonc-tion \T1/lmtt/m/n/10.95 diagnostic
+ []
+
+[2]
+Overfull \hbox (7.81683pt too wide) in paragraph at lines 59--60
+[]\T1/lmr/m/n/10.95 Nous sup-pri-mons les dou-blons et fu-sion-nons les deux je
+ux de don-nées sur la va-riable \T1/lmtt/m/n/10.95 identifiant \T1/lmr/m/n/10.9
+5 : 
+ []
+
+[3] [4]) (chapters/analyse
 Missing character: There is no ’ ("2019) in font ec-lmr10!
-[3] [4]) (chapters/analyse) [5] (rapport.aux) )
-Output written on rapport.xdv (5 pages, 35672 bytes).
+[5]
+File: images/py/epargneTotal_age.png Graphic file (type bmp)
+<images/py/epargneTotal_age.png>
+File: images/py/eparge_fin_age.png Graphic file (type bmp)
+<images/py/eparge_fin_age.png>
+ [6]
+File: images/py/CSP_epargne.png Graphic file (type bmp)
+<images/py/CSP_epargne.png>
+
+Missing character: There is no ’ ("2019) in font ec-lmr10!
+File: images/py/csp_epargne_fin.png Graphic file (type bmp)
+<images/py/csp_epargne_fin.png>
+File: images/py/epargne_total_marche.png Graphic file (type bmp)
+<images/py/epargne_total_marche.png>
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+File: images/py/epargne_total_typeClient.png Graphic file (type bmp)
+<images/py/epargne_total_typeClient.png>
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+Missing character: There is no ’ ("2019) in font ec-lmr10!
+[7] [8]
+Overfull \hbox (9.95409pt too wide) in paragraph at lines 102--103
+[]\T1/lmr/bx/n/10.95 Marché \T1/lmr/m/n/10.95 : les par-ti-cu-liers sont beau-c
+oup plus nom-breux, mais cer-tains pro-fes-sion-nels concentrent
+ []
+
+) [9] (rapport.aux) )
+Output written on rapport.xdv (9 pages, 51228 bytes).

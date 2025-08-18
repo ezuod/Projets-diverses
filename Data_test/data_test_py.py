@@ -79,10 +79,7 @@ merged = merged.rename(columns=rename_map)
 merged = merged.drop_duplicates()
 
 # Sélection des colonnes nécessaires
-needed = [
-    "age", "sexe", "marche", "csp", "secteur",
-    "type_client", "situation_famille", "epargne_financiere", "epargne_total"
-]
+needed = ["age", "marche", "csp", "type_client", "situation_famille", "epargne_financiere", "epargne_total"]
 available = [c for c in needed if c in merged.columns]
 merged = merged[available].copy()
 
