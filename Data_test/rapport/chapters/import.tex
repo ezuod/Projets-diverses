@@ -162,3 +162,59 @@ run;
 \end{lstlisting}
 
 Cette première phase dans SAS permet donc d'assurer la bonne lecture des données et la cohérence des formats avant de passer à l'analyse descriptive et au rapprochement des deux jeux de données.
+
+\subsection{R}
+
+Les données ont également été traitées dans l'environnement \texttt{RStudio}.  
+L'importation s'est faite de manière intuitive, l'interface de RStudio simplifiant le chargement manuel des feuilles \texttt{Data\_1} et \texttt{Data\_2} issues du fichier Excel.  
+
+\subsubsection{Importation des données}
+L'importation des deux feuilles \texttt{Data\_1} et \texttt{Data\_2} a été effectuée directement via l'interface graphique de RStudio (menu Import Dataset).  
+Les jeux de données on donc été disponibles dans l'environnement de travail sous les noms \texttt{data1} et \texttt{data2}.  
+
+\subsubsection{Correction des types de variables}
+Certaines variables n'étaient pas reconnues avec le bon format.  
+D'après le dictionnaire \texttt{TYPES VARIABLES}, les colonnes \texttt{epargne\_financiere} et \texttt{epargne\_totale} de \texttt{Data\_1} devaient être numériques, alors qu'elles avaient été importées comme chaînes de caractères.  
+De même, la variable \texttt{DATE\_ERG} de \texttt{Data\_2} devait être au format date.  
+
+Ces conversions ont été réalisées à l'importation du fichier mais peuvent se faire à la main :
+
+\begin{lstlisting}[language=R, caption=Conversion des variables]
+data1$epargne_financiere <- as.numeric(data1$epargne_financiere)
+data1$epargne_totale <- as.numeric(data1$epargne_totale)
+data2$DATE_ERG <- as.Date(data2$DATE_ERG, format="%Y-%m-%d")
+\end{lstlisting}
+
+\subsubsection{Correction des noms de variables}
+Une erreur d'orthographe a été détectée dans la feuille \texttt{Data\_1} : la variable \texttt{identifiant} était mal orthographiée \texttt{indentiffiant}.  
+Cette variable constitue la clé commune aux deux bases de données.  
+Afin de permettre leur fusion, le renommage a été effectué :  
+
+\begin{lstlisting}[language=R, caption=Correction de l’orthographe d’une variable]
+    names(data_1)[names(data_1) == "identiffiant"] <- "identifiant"
+\end{lstlisting}
+
+\subsubsection{Fusion des deux bases}
+Une fois les corrections effectuées, les deux jeux de données ont pu être fusionnés grâce à la clé commune \texttt{identifiant}.  
+
+\begin{lstlisting}[language=R, caption=Fusion des bases de données]
+    data_merge <- merge(data_1,data_2,by = "identifiant", all = TRUE)
+\end{lstlisting}
+
+Cette opération a permis de consolider l'information en un seul tableau prêt pour l'analyse.  
+
+\subsubsection{Exploration graphique}
+Plusieurs tentatives de visualisation ont été effectuées avec la librairie \texttt{tidyverse} (notamment \texttt{ggplot2}).  
+Cependant, les résultats obtenus se sont révélés moins pertinents que ceux obtenus en Python, en particulier pour la représentation des distributions et des regroupements par catégories.  
+
+Ainsi, si R a permis un contrôle efficace des types et de la structure des données, l'exploration graphique a finalement été poursuivie de manière plus approfondie avec Python.
+\subsubsection{Export du jeu de données fusionné}
+Enfin, afin de conserver une trace du nouveau jeu de données consolidé (\texttt{merged}), il est possible de l'exporter sous forme de fichier CSV.  
+Cette opération permet de réutiliser la base nettoyée et fusionnée dans d'autres environnements (Python, SAS, Excel, ...) :
+
+\begin{lstlisting}[language=R, caption=Exportation du jeu de données fusionné]
+write.table(merged,
+            "/Users/wendyr/Downloads/data_test.csv",
+            sep = ",",
+            row.names = FALSE)
+\end{lstlisting}
