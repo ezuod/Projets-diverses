@@ -103,66 +103,6 @@ for col in ["age", "epargne_financiere", "epargne_total"]:
 merged = merged.dropna(subset=["age", "epargne_total", "epargne_financiere"])
 \end{lstlisting}
 
-\subsection{SAS}
-
-En parallèle de Python, les données ont également été importées dans SAS afin de permettre une exploration complémentaire et des traitements statistiques. 
-
-\subsubsection{Définition de la librairie et importation}
-Tout d'abord, une librairie pointant vers le fichier Excel a été définie. L'instruction \texttt{proc import} a ensuite été utilisée pour lire directement les feuilles \texttt{Data\_1} et \texttt{Data\_2} :
-
-\begin{lstlisting}[caption=Importation des données dans SAS]
-libname x xlsx '/home/u64300920/data_test_BIFORA (2) (1).xlsx';
-
-/* Import feuille Data_1 */
-proc import datafile='/home/u64300920/data_test_BIFORA (2) (1).xlsx'
-    out=x.data1
-    dbms=xlsx
-    replace;
-    sheet="Data_1";
-    getnames=yes;
-run;
-
-/* Import feuille Data_2 */
-proc import datafile='/home/u64300920/data_test_BIFORA (2) (1).xlsx'
-    out=x.data2
-    dbms=xlsx
-    replace;
-    sheet="Data_2";
-    getnames=yes;
-run;
-\end{lstlisting}
-
-\subsubsection{Conversion des variables mal typées}
-Lors de l'importation, certaines variables continues (par exemple \texttt{Epargne\_financiere}) ont été interprétées comme du texte.  
-Afin de pouvoir effectuer des analyses statistiques correctes, elles ont été converties en variables numériques à l'aide de la fonction \texttt{input()} :
-
-\begin{lstlisting}[caption=Conversion de variables texte en numérique]
-/* Création d'une nouvelle version de Data_1 avec conversion */
-data x.data1_num;
-    set x.data1;
-    Epargne_financiere_num = input(Epargne_financiere, best32.);
-    drop Epargne_financiere;
-    rename Epargne_financiere_num = Epargne_financiere;
-run;
-\end{lstlisting}
-
-Cette étape garantit que les montants financiers pourront être utilisés dans des calculs (sommes, moyennes, médianes, etc.).
-
-\subsubsection{Contrôle de l'importation}
-Enfin, une inspection des structures des tables a été réalisée avec la procédure \texttt{proc contents}, afin de vérifier la nature des variables importées (caractère ou numérique) :
-
-\begin{lstlisting}[caption=Inspection des tables SAS]
-proc contents data=x.data1;
-    title "Structure du dataset DATA_1";
-run;
-
-proc contents data=x.data2;
-    title "Structure du dataset DATA_2";
-run;
-\end{lstlisting}
-
-Cette première phase dans SAS permet donc d'assurer la bonne lecture des données et la cohérence des formats avant de passer à l'analyse descriptive et au rapprochement des deux jeux de données.
-
 \subsection{R}
 
 Les données ont également été traitées dans l'environnement \texttt{RStudio}.  
@@ -218,3 +158,109 @@ write.table(merged,
             sep = ",",
             row.names = FALSE)
 \end{lstlisting}
+
+\subsection{SAS}
+En parallèle de Python et R, les données ont également été importées dans SAS afin de permettre une exploration complémentaire et des traitements statistiques. 
+
+\subsubsection{Définition de la librairie et importation}
+Tout d'abord, une librairie pointant vers le fichier Excel a été définie. L'instruction \texttt{proc import} a ensuite été utilisée pour lire directement les feuilles \texttt{Data\_1} et \texttt{Data\_2} :
+
+\begin{lstlisting}[caption=Importation des données dans SAS]
+libname x xlsx '/home/u64300920/data_test_BIFORA (2) (1).xlsx';
+
+/* Import feuille Data_1 */
+proc import datafile='/home/u64300920/data_test_BIFORA (2) (1).xlsx'
+    out=x.data1
+    dbms=xlsx
+    replace;
+    sheet="Data_1";
+    getnames=yes;
+run;
+
+/* Import feuille Data_2 */
+proc import datafile='/home/u64300920/data_test_BIFORA (2) (1).xlsx'
+    out=x.data2
+    dbms=xlsx
+    replace;
+    sheet="Data_2";
+    getnames=yes;
+run;
+\end{lstlisting}
+
+\subsubsection{Renommage des variables}
+Lors de l'importation, une erreur de frappe a été identifiée dans la variable clé \texttt{identifiant}, indispensable pour la fusion des deux bases.  
+Afin d’assurer la cohérence et de permettre le merge, la variable \texttt{identiffiant} a été renommée correctement :
+
+\begin{lstlisting}[caption=Correction d'une faute dans le nom de variable]
+proc datasets library=x nolist;
+    modify data1;
+    rename identiffiant = identifiant;
+quit; 
+\end{lstlisting}
+
+\subsubsection{Conversion des variables mal typées}
+Comme dans Python et R, certaines variables quantitatives ont été importées sous forme de texte, ce qui empêche les calculs statistiques.  
+Un traitement a donc été appliqué pour convertir correctement ces colonnes (\texttt{Epargne\_financiere}, \texttt{Epargne\_totale}) en numérique, et la date \texttt{DATE\_ERG} en format date SAS :
+
+\begin{lstlisting}[caption=Conversion des variables en SAS]
+data x.data1_tmp;
+    set x.data1;
+    /* Conversion en numérique */
+    Epargne_financiere_tmp = input(Epargne_financiere, best32.);
+    Epargne_totale_tmp     = input(Epargne_totale, best32.);
+
+    /* Conversion en format date */
+    format DATE_ERG date9.;
+    DATE_ERG = input(DATE_ERG, yymmdd10.);
+
+    /* Nettoyage : suppression des anciennes versions */
+    drop Epargne_financiere Epargne_totale;
+    rename Epargne_financiere_tmp = Epargne_financiere
+           Epargne_totale_tmp     = Epargne_totale;
+run;
+
+/* Remplacer l'ancienne table par la version corrigée */
+proc datasets library=x nolist;
+    delete data1;
+    change data1_tmp = data1;
+quit;
+\end{lstlisting}
+
+\subsubsection{Fusion des bases de données}
+Une fois les variables corrigées et renommées, les deux jeux de données peuvent être fusionnés sur la clé commune \texttt{identifiant}.  
+Après un tri préalable des deux tables, la fusion est effectuée à l'aide de l'instruction \texttt{merge} :
+
+\begin{lstlisting}[caption=Fusion des deux tables dans SAS]
+proc sort data=x.data1;
+    by identifiant;
+run;
+
+proc sort data=x.data2;
+    by identifiant;
+run;
+
+data x.data_merge;
+    merge x.data1(in=a) x.data2(in=b);
+    by identifiant;
+    if a and b; /* garde seulement les identifiants présents dans les deux tables */
+run;
+\end{lstlisting}
+
+\subsubsection{Contrôle final}
+Enfin, la structure des tables obtenues a été vérifiée grâce à la procédure \texttt{proc contents}, afin de s'assurer de la bonne prise en compte des types de variables et de la fusion :
+
+\begin{lstlisting}[caption=Inspection des tables SAS]
+proc contents data=x.data1;
+    title "Structure du dataset DATA_1";
+run;
+
+proc contents data=x.data2;
+    title "Structure du dataset DATA_2";
+run;
+
+proc contents data=x.data_merge;
+    title "Structure du dataset fusionné";
+run;
+\end{lstlisting}
+
+Ainsi, SAS a permis de répliquer les étapes de nettoyage et de transformation effectuées dans Python et R, et de générer un jeu de données consolidé (\texttt{data\_merge}) utilisable pour des analyses statistiques plus poussées.
